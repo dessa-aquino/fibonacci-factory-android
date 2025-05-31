@@ -1,15 +1,10 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fibonaccifactory.domain.model.FibonacciResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-data class FibonacciResult(
-    val index: Int,
-    val value: Int,
-    val timestamp: Long = System.currentTimeMillis()
-)
 
 class FibonacciViewModel : ViewModel() {
     private val _fibonacciResults = MutableStateFlow<List<FibonacciResult>>(emptyList())
