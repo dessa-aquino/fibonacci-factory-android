@@ -85,7 +85,7 @@ fun SummaryActivity(
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp),
                             elevation = CardDefaults.cardElevation(
-                                defaultElevation = 2.dp
+                                defaultElevation = 0.dp
                             ),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer

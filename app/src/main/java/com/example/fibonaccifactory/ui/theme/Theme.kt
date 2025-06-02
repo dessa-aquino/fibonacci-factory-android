@@ -17,35 +17,36 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = LightBlue80,
+    secondary = LightBlue60,
+    tertiary = Blue80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    primary = LightBlue40,
+    secondary = LightBlue20,
+    tertiary = Blue40,
+    
+    // Outras cores personalizadas
     background = Color.White,
     surface = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F)
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
-    */
+    
+    // Cores dos containers
+    primaryContainer = LightBlue60,
+    onPrimaryContainer = Blue40,
+    secondaryContainer = LightBlue80.copy(alpha = 0.7f),
+    onSecondaryContainer = Blue40
 )
 
 @Composable
 fun FibonacciFactoryTheme(
-    darkTheme: Boolean = false, // Forçando tema claro
-    dynamicColor: Boolean = false, // Desabilitando cores dinâmicas
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = LightColorScheme
