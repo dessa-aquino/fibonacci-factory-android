@@ -1,19 +1,30 @@
+package com.example.fibonaccifactory.presentation.viewmodel
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fibonaccifactory.domain.model.FibonacciResult
+import com.example.fibonaccifactory.domain.model.FibonacciSummary
+import com.example.fibonaccifactory.domain.repository.FibonacciSummaryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class FibonacciViewModel : ViewModel() {
+class FibonacciViewModel (
+    private val summaryRepository: FibonacciSummaryRepository
+) : ViewModel() {
     private val _fibonacciResults = MutableStateFlow<List<FibonacciResult>>(emptyList())
     val fibonacciResults: StateFlow<List<FibonacciResult>> = _fibonacciResults.asStateFlow()
+
 
     fun calculateAndUpdateSequence(n: Int) {
         viewModelScope.launch {
             val sequence = generateFibonacciSequence(n)
             _fibonacciResults.value = sequence
+
+            val totalTime = sequence.sumOf { it.timestamp }
+            val summary = FibonacciSummary(n, totalTime)
+            summaryRepository.saveSummary(summary)
         }
     }
 

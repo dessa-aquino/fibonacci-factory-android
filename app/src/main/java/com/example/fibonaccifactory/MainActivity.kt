@@ -1,6 +1,5 @@
 package com.example.fibonaccifactory
 
-import FibonacciViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,29 +20,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fibonaccifactory.presentation.navigation.AppNavigation
 import com.example.fibonaccifactory.ui.theme.FibonacciFactoryTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-
+import com.example.fibonaccifactory.presentation.viewmodel.FibonacciViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +54,10 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FibonacciActivity(
-    viewModel: FibonacciViewModel = viewModel(),
     onNavigateToSummary: () -> Unit
 ) {
+    val viewModel: FibonacciViewModel = koinViewModel()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -83,23 +78,21 @@ fun FibonacciActivity(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            FibonacciInput(paddingValues)
-            FibonacciResultList(paddingValues)
+            FibonacciInput(viewModel)
+            FibonacciResultList(viewModel)
         }
     }
 }
 
 @Composable
 fun FibonacciInput(
-    innerPadding: PaddingValues
+    viewModel: FibonacciViewModel
 ) {
-    val viewModel: FibonacciViewModel = viewModel()
     var textInput by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
-            .padding(innerPadding)
             .padding(16.dp)
     ) {
         TextField(
@@ -120,7 +113,6 @@ fun FibonacciInput(
                         keyboardController?.hide()
                     }
                     textInput = ""
-
                 }
             )
         )
@@ -129,14 +121,12 @@ fun FibonacciInput(
 
 @Composable
 fun FibonacciResultList(
-    innerPadding: PaddingValues
+    viewModel: FibonacciViewModel
 ) {
-    val viewModel: FibonacciViewModel = viewModel()
     val results by viewModel.fibonacciResults.collectAsState()
 
-    LazyColumn (
+    LazyColumn(
         modifier = Modifier
-            .padding(innerPadding)
             .padding(16.dp)
     ) {
         items(results) { result ->
