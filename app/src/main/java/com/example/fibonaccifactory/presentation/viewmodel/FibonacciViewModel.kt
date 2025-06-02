@@ -28,6 +28,10 @@ class FibonacciViewModel (
         }
     }
 
+    fun clearResults() {
+        _fibonacciResults.value = emptyList()
+    }
+
     private fun generateFibonacciSequence(n: Int): List<FibonacciResult> {
         if (n < 0) return emptyList()
 
