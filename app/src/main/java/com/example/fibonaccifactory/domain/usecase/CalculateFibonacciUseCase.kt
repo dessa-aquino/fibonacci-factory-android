@@ -13,7 +13,10 @@ class CalculateFibonacciUseCase : UseCase<Int, List<FibonacciResult>> {
     }
 
     private fun calculateFibonacciSequence(n: Int): List<FibonacciResult> {
-        if (n < 0) throw IllegalArgumentException("Index cannot be negative")
+        when {
+            n < 0 -> throw IllegalArgumentException("O número não pode ser negativo")
+            n > 92 -> throw IllegalArgumentException("Números acima de 92 causarão overflow. Por favor, use um número menor")
+        }
 
         val results = mutableListOf<FibonacciResult>()
         

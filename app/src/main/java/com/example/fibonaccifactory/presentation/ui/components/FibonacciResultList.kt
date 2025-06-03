@@ -28,51 +28,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.fibonaccifactory.presentation.viewmodel.FibonacciState
+import com.example.fibonaccifactory.presentation.state.FibonacciState
 import com.example.fibonaccifactory.presentation.viewmodel.FibonacciViewModel
 
 @Composable
-fun FibonacciResultList(
-    viewModel: FibonacciViewModel
-) {
+fun FibonacciResultList(viewModel: FibonacciViewModel) {
     val state by viewModel.state.collectAsState()
 
     when (state) {
         is FibonacciState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
+            LoadingIndicator()
         }
         is FibonacciState.Error -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Error",
-                        tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = (state as FibonacciState.Error).message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                }
-            }
+            ErrorDisplay((state as FibonacciState.Error).message)
         }
         is FibonacciState.Success -> {
             val results = (state as FibonacciState.Success).results
@@ -120,4 +88,4 @@ fun FibonacciResultList(
             }
         }
     }
-} 
+}

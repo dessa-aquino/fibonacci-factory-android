@@ -6,24 +6,17 @@ import com.example.fibonaccifactory.domain.model.FibonacciResult
 import com.example.fibonaccifactory.domain.model.FibonacciSummary
 import com.example.fibonaccifactory.domain.repository.FibonacciSummaryRepository
 import com.example.fibonaccifactory.domain.usecase.CalculateFibonacciUseCase
+import com.example.fibonaccifactory.presentation.state.FibonacciState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-sealed class FibonacciState {
-    data object Loading : FibonacciState()
-    data class Success(
-        val results: List<FibonacciResult>,
-        val totalCalculationTime: Long
-    ) : FibonacciState()
-    data class Error(val message: String) : FibonacciState()
-}
-
 class FibonacciViewModel(
     private val calculateFibonacciUseCase: CalculateFibonacciUseCase,
     private val summaryRepository: FibonacciSummaryRepository
 ) : ViewModel() {
+
     private val _state = MutableStateFlow<FibonacciState>(FibonacciState.Success(emptyList(), 0))
     val state: StateFlow<FibonacciState> = _state.asStateFlow()
 
@@ -31,7 +24,6 @@ class FibonacciViewModel(
         viewModelScope.launch {
             try {
                 _state.value = FibonacciState.Loading
-                
                 val sequence = calculateFibonacciUseCase(number)
                 val totalTime = calculateTotalTime(sequence)
                 
@@ -45,8 +37,10 @@ class FibonacciViewModel(
                     totalTime = totalTime
                 )
                 summaryRepository.saveSummary(summary)
+            } catch (e: IllegalArgumentException) {
+                _state.value = FibonacciState.Error(e.message ?: "Erro ao calcular a sequência de Fibonacci")
             } catch (e: Exception) {
-                _state.value = FibonacciState.Error(e.message ?: "An unexpected error occurred")
+                _state.value = FibonacciState.Error("Ocorreu um erro inesperado: ${e.message}")
             }
         }
     }
