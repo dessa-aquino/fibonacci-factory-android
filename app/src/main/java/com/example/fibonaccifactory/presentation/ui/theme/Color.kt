@@ -1,4 +1,4 @@
-package com.example.fibonaccifactory.ui.theme
+package com.example.fibonaccifactory.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

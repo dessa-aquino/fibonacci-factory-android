@@ -1,4 +1,4 @@
-package com.example.fibonaccifactory.presentation.activities
+package com.example.fibonaccifactory.presentation.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -32,14 +32,14 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SummaryActivity(
+fun SummaryScreen(
     onNavigateBack: () -> Unit
 ) {
     val viewModel: SummaryViewModel = koinViewModel()
     val summaries by viewModel.summaries.collectAsState()
 
     Scaffold(
-        topBar = { SummaryActivityTopBar(onNavigateBack = onNavigateBack) },
+        topBar = { SummaryScreenTopBar(onNavigateBack = onNavigateBack) },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
@@ -106,7 +106,7 @@ fun SummaryList(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SummaryActivityTopBar(
+fun SummaryScreenTopBar(
     onNavigateBack: () -> Unit
 ) {
     TopAppBar(
