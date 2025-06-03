@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fibonaccifactory.domain.model.FibonacciResult
 import com.example.fibonaccifactory.domain.model.FibonacciSummary
 import com.example.fibonaccifactory.domain.repository.FibonacciSummaryRepository
-import kotlinx.coroutines.delay
+import com.example.fibonaccifactory.domain.usecase.CalculateFibonacciUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,63 +13,49 @@ import kotlinx.coroutines.launch
 
 sealed class FibonacciState {
     data object Loading : FibonacciState()
-    data class Success(val results: List<FibonacciResult>) : FibonacciState()
+    data class Success(
+        val results: List<FibonacciResult>,
+        val totalCalculationTime: Long
+    ) : FibonacciState()
     data class Error(val message: String) : FibonacciState()
 }
 
 class FibonacciViewModel(
+    private val calculateFibonacciUseCase: CalculateFibonacciUseCase,
     private val summaryRepository: FibonacciSummaryRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow<FibonacciState>(FibonacciState.Success(emptyList()))
+    private val _state = MutableStateFlow<FibonacciState>(FibonacciState.Success(emptyList(), 0))
     val state: StateFlow<FibonacciState> = _state.asStateFlow()
 
-    fun calculateAndUpdateSequence(n: Int) {
+    fun calculateAndUpdateSequence(number: Int) {
         viewModelScope.launch {
             try {
                 _state.value = FibonacciState.Loading
-                delay(150)
                 
-                if (n > 45) {
-                    throw IllegalArgumentException("Número muito grande! Use um valor menor que 46.")
-                }
+                val sequence = calculateFibonacciUseCase(number)
+                val totalTime = calculateTotalTime(sequence)
                 
-                val sequence = generateFibonacciSequence(n)
-                _state.value = FibonacciState.Success(sequence)
+                _state.value = FibonacciState.Success(
+                    results = sequence,
+                    totalCalculationTime = totalTime
+                )
 
-                val totalTime = sequence.sumOf { it.timestamp }
-                val summary = FibonacciSummary(n, totalTime)
+                val summary = FibonacciSummary(
+                    n = number,
+                    totalTime = totalTime
+                )
                 summaryRepository.saveSummary(summary)
             } catch (e: Exception) {
-                _state.value = FibonacciState.Error(e.message ?: "Erro desconhecido")
+                _state.value = FibonacciState.Error(e.message ?: "An unexpected error occurred")
             }
         }
     }
 
     fun clearResults() {
-        _state.value = FibonacciState.Success(emptyList())
+        _state.value = FibonacciState.Success(emptyList(), 0)
     }
 
-    private fun generateFibonacciSequence(n: Int): List<FibonacciResult> {
-        if (n < 0) throw IllegalArgumentException("O número deve ser positivo")
-
-        val results = mutableListOf<FibonacciResult>()
-        results.add(FibonacciResult(0, 0))
-
-        if (n == 0) return results
-
-        results.add(FibonacciResult(1, 1))
-        if (n == 1) return results
-
-        var a = 0L
-        var b = 1L
-
-        for (i in 2..n) {
-            val temp = a + b
-            a = b
-            b = temp
-            results.add(FibonacciResult(i, b))
-        }
-
-        return results
+    private fun calculateTotalTime(results: List<FibonacciResult>): Long {
+        return results.sumOf { it.timestamp }
     }
 }
