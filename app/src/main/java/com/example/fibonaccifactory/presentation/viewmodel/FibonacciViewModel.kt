@@ -23,6 +23,7 @@ class FibonacciViewModel(
     fun calculateAndUpdateSequence(number: Int) {
         viewModelScope.launch {
             try {
+                clearResults()
                 _state.value = FibonacciState.Loading
                 val sequence = calculateFibonacciUseCase(number)
                 val totalTime = calculateTotalTime(sequence)

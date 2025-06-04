@@ -2,12 +2,14 @@ package com.example.fibonaccifactory.domain.usecase
 
 import com.example.fibonaccifactory.domain.model.FibonacciResult
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class CalculateFibonacciUseCase : UseCase<Int, List<FibonacciResult>> {
 
     override suspend fun invoke(params: Int): List<FibonacciResult> {
         return withContext(Dispatchers.Default) {
+            delay(1000) // 3 seconds delay
             calculateFibonacciSequence(params)
         }
     }
