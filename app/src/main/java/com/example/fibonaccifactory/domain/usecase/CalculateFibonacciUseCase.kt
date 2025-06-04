@@ -14,13 +14,13 @@ class CalculateFibonacciUseCase : UseCase<Int, List<FibonacciResult>> {
 
     private fun calculateFibonacciSequence(n: Int): List<FibonacciResult> {
         when {
-            n < 0 -> throw IllegalArgumentException("O número não pode ser negativo")
-            n > 92 -> throw IllegalArgumentException("Números acima de 92 causarão overflow. Por favor, use um número menor")
+            n < 0 -> throw IllegalArgumentException("Number cannot be negative")
+            n > 92 -> throw IllegalArgumentException("Numbers above 92 will cause overflow. Please use a smaller number")
         }
 
         val results = mutableListOf<FibonacciResult>()
         
-        // Primeiro número (0)
+        // First number (0)
         val startTime0 = System.nanoTime()
         results.add(FibonacciResult(
             index = 0,
@@ -30,7 +30,7 @@ class CalculateFibonacciUseCase : UseCase<Int, List<FibonacciResult>> {
 
         if (n == 0) return results
 
-        // Segundo número (1)
+        // Second number (1)
         val startTime1 = System.nanoTime()
         results.add(FibonacciResult(
             index = 1,
@@ -40,7 +40,7 @@ class CalculateFibonacciUseCase : UseCase<Int, List<FibonacciResult>> {
 
         if (n == 1) return results
 
-        // Resto da sequência
+        // Rest of the sequence
         var prev = 0L
         var current = 1L
 

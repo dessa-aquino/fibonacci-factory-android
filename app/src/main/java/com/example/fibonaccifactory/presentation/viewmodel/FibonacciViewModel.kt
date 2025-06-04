@@ -38,9 +38,9 @@ class FibonacciViewModel(
                 )
                 summaryRepository.saveSummary(summary)
             } catch (e: IllegalArgumentException) {
-                _state.value = FibonacciState.Error(e.message ?: "Erro ao calcular a sequência de Fibonacci")
+                _state.value = FibonacciState.Error(e.message ?: "Error calculating Fibonacci sequence")
             } catch (e: Exception) {
-                _state.value = FibonacciState.Error("Ocorreu um erro inesperado: ${e.message}")
+                _state.value = FibonacciState.Error("An unexpected error occurred: ${e.message}")
             }
         }
     }
