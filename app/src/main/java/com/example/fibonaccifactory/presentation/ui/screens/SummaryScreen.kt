@@ -30,6 +30,7 @@ import com.example.fibonaccifactory.domain.model.FibonacciSummary
 import com.example.fibonaccifactory.presentation.ui.components.InfoCard
 import com.example.fibonaccifactory.presentation.viewmodel.SummaryViewModel
 import org.koin.androidx.compose.koinViewModel
+import java.text.DecimalFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,6 +65,8 @@ fun SummaryScreen(
 fun SummaryList(
     summaries: List<FibonacciSummary>
 ) {
+    val decimalFormat = DecimalFormat("0.00")
+    
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,7 +75,7 @@ fun SummaryList(
         items(summaries) { summary ->
             InfoCard(
                 leftText = "Input number: ${summary.n}",
-                rightText = "Time: ${summary.totalTime}ms"
+                rightText = "Time: ${decimalFormat.format(summary.totalTime)}ms"
             )
         }
     }
