@@ -49,11 +49,6 @@ fun FibonacciScreen(
                 .padding(16.dp)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            Text(
-                text = "Calculate Fibonacci Sequence",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
             Spacer(modifier = Modifier.height(16.dp))
             FibonacciInput(viewModel, textInput) { textInput = it }
             

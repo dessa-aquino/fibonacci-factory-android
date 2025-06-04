@@ -16,9 +16,9 @@ class FibonacciApplication : Application() {
             androidLogger()
             androidContext(this@FibonacciApplication)
             modules(
-                appModule,        // Configurações da aplicação
-                domainModule,     // Use cases e regras de negócio
-                presentationModule // ViewModels e apresentação
+                appModule,
+                domainModule,
+                presentationModule
             )
         }
     }

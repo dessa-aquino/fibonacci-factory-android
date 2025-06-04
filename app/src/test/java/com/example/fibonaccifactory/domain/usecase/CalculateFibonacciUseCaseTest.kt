@@ -40,7 +40,7 @@ class CalculateFibonacciUseCaseTest {
         result.forEachIndexed { index, fibResult ->
             assertEquals(expectedValues[index], fibResult.value)
             assertEquals(index, fibResult.index)
-            assertTrue(fibResult.timestamp >= 0)
+            assertTrue(fibResult.timeInterval >= 0)
         }
     }
 
@@ -68,7 +68,7 @@ class CalculateFibonacciUseCaseTest {
     fun `should measure execution time for each number`() = runBlocking {
         val result = useCase(5)
         result.forEach { fibResult ->
-            assertTrue(fibResult.timestamp > 0)
+            assertTrue(fibResult.timeInterval > 0)
         }
     }
 } 

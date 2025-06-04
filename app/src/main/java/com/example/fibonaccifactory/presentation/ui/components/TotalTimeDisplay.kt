@@ -19,15 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.fibonaccifactory.presentation.state.FibonacciState
 import com.example.fibonaccifactory.presentation.viewmodel.FibonacciViewModel
+import java.text.DecimalFormat
 
 @Composable
 fun TotalTimeDisplay(viewModel: FibonacciViewModel) {
     val state by viewModel.state.collectAsState()
+    val decimalFormat = DecimalFormat("0.00")
     
     if (state is FibonacciState.Success) {
         val results = (state as FibonacciState.Success).results
         if (results.isNotEmpty()) {
-            val totalTime = results.sumOf { it.timestamp }
+            val totalTime = results.sumOf { it.timeInterval }
             
             Spacer(modifier = Modifier.height(8.dp))
             Card(
@@ -52,7 +54,7 @@ fun TotalTimeDisplay(viewModel: FibonacciViewModel) {
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
-                        text = "${totalTime}ms",
+                        text = "${decimalFormat.format(totalTime)}ms",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),

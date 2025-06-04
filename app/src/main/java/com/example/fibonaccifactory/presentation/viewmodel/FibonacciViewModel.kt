@@ -17,7 +17,7 @@ class FibonacciViewModel(
     private val summaryRepository: FibonacciSummaryRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<FibonacciState>(FibonacciState.Success(emptyList(), 0))
+    private val _state = MutableStateFlow<FibonacciState>(FibonacciState.Success(emptyList(), 0.0))
     val state: StateFlow<FibonacciState> = _state.asStateFlow()
 
     fun calculateAndUpdateSequence(number: Int) {
@@ -47,10 +47,10 @@ class FibonacciViewModel(
     }
 
     fun clearResults() {
-        _state.value = FibonacciState.Success(emptyList(), 0)
+        _state.value = FibonacciState.Success(emptyList(), 0.0)
     }
 
-    private fun calculateTotalTime(results: List<FibonacciResult>): Long {
-        return results.sumOf { it.timestamp }
+    private fun calculateTotalTime(results: List<FibonacciResult>): Double {
+        return results.sumOf { it.timeInterval }
     }
 }

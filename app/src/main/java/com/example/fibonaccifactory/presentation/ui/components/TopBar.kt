@@ -1,5 +1,6 @@
 package com.example.fibonaccifactory.presentation.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -8,6 +9,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import com.example.fibonaccifactory.presentation.viewmodel.FibonacciViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,7 +21,14 @@ fun FibonacciTopBar(
     onTextInputChange: (String) -> Unit
 ) {
     TopAppBar(
-        title = { },
+        title = { 
+            Text(
+                text = "Fibonacci",
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
         navigationIcon = {
             TextButton(
                 onClick = {
