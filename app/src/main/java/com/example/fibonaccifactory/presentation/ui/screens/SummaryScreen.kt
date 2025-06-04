@@ -11,8 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.fibonaccifactory.domain.model.FibonacciSummary
+import com.example.fibonaccifactory.presentation.ui.components.InfoCard
 import com.example.fibonaccifactory.presentation.viewmodel.SummaryViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -74,32 +73,10 @@ fun SummaryList(
             .padding(vertical = 8.dp)
     ) {
         items(summaries) { summary ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 0.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(
-                        text = "Input Number: ${summary.n}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                    Text(
-                        text = "Calculation Time: ${summary.totalTime}ms",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
-            }
+            InfoCard(
+                leftText = "Input number: ${summary.n}",
+                rightText = "Time: ${summary.totalTime}ms"
+            )
         }
     }
 }
